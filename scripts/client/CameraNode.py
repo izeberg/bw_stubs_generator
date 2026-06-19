@@ -185,7 +185,9 @@ class StubModuleGenerator(Stub):
 	def save(self):
 		if not os.path.exists(MODULES_FOLDER):
 			os.makedirs(MODULES_FOLDER)
-		with open(os.path.join(MODULES_FOLDER, self.name + '.py'), 'w') as f:
+		target_path = os.path.join(MODULES_FOLDER, self.name + '.py')
+		print("bw_stubs_generator:", target_path)
+		with open(target_path, 'w') as f:
 			f.write(self.get_string())
 
 EXCLUDES = (
@@ -201,7 +203,6 @@ else:
 	try:
 		for k, v in sys.modules.items():
 			if k not in EXCLUDES and 'built-in' in repr(v):
-				print(k, repr(v), k not in EXCLUDES)
 				StubModuleGenerator(k).save()
 	except Exception as ex:
 		traceback.print_exception(ex)
